@@ -14,7 +14,7 @@ export default async function Home() {
 
   return (
     <>
-      <DisplayUsername username={session.user.username} />
+      <DisplayUsername username={session.user.username || session.user.email} />
       <LogoutButton />
     </>
   )
