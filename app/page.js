@@ -1,7 +1,7 @@
 import LogoutButton from '@/components/LogoutButton'
 import DisplayUsername from '@/components/DisplayUsername'
 import { getServerSession } from 'next-auth'
-import { authOptions } from '@/utils/authOptions'
+import { authOptions } from '@/lib/authOptions'
 import { redirect } from 'next/navigation'
 
 
