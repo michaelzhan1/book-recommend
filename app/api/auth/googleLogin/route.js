@@ -1,27 +1,21 @@
-import { hash } from 'bcrypt';
 import { pool } from '@/utils/database';
+import { hash } from 'bcrypt';
+
 
 export async function POST(request) {
   const body = await request.json();
-  const { username, password } = body;
+  const { email } = body;
+  console.log(body)
 
   try {
     const client = await pool.connect();
-    const result = await client.query('SELECT * FROM users WHERE username = $1', [username]);
-    if (result.rows.length > 0) {
-      client.release();
-      return {
-        status: 409,
-        body: {
-          error: 'Username already exists'
-        }
-      }
+    const result = await client.query('SELECT * FROM users WHERE email = $1', [email]);
+    if (result.rows.length === 0) {
+      const newPassword = Math.random().toString(36).slice(-8);
+      const hashedPassword = await hash(newPassword, 10);
+      await client.query('INSERT INTO users (email, password) VALUES ($1, $2)', [email, hashedPassword]);
     }
-
-    const hashedPassword = await hash(password, 10);
-    await client.query('INSERT INTO users (username, password) VALUES ($1, $2)', [username, hashedPassword]);
     client.release();
-
     return new Response({
       status: 200,
       body: {
