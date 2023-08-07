@@ -1,6 +1,6 @@
 import LogoutButton from '@/components/LogoutButton'
 import DisplayUsername from '@/components/DisplayUsername'
-import Search from '@/components/Search'
+import Books from '@/components/Books'
 import { getServerSession } from 'next-auth'
 import { authOptions } from '@/lib/authOptions'
 import { redirect } from 'next/navigation'
@@ -16,7 +16,7 @@ export default async function Home() {
   return (
     <>
       <DisplayUsername username={session.user.username} />
-      <Search />
+      <Books />
       <LogoutButton />
     </>
   )

@@ -12,6 +12,10 @@ export default function Search (props) {
   const [loading, setLoading] = useState(false);
 
   const handleSearch = async (input) => {
+    if (!input) {
+      setRes([]);
+      return;
+    }
     setLoading(true);
     try {
       const url = `https://www.googleapis.com/books/v1/volumes?q=${input}&projection=lite&key=${process.env.NEXT_PUBLIC_API_KEY}`;
@@ -27,16 +31,29 @@ export default function Search (props) {
 
   const debouncedSearch = _debounce(handleSearch, 1500);
 
+  const handleTyping = (e) => {
+    setQuery(e.target.value);
+    debouncedSearch(e.target.value);
+  }
+
   return (
     <>
-      <input type="text" placeholder="Search" onChange={ (e) => debouncedSearch(e.target.value) }/>
+      <input type="text" placeholder="Search" value={query} onChange={ (e) => handleTyping(e) }/>
       <div>
         { loading ? (
           <p>Loading...</p> 
         ) : (
           res.map((item, index) => {
           return (
-            <div key={index}>
+            <div key={index} onClick={ () => {
+              props.handleAdd({
+                title: item.volumeInfo.title,
+                author: item.volumeInfo.author,
+                image: item.volumeInfo.imageLinks?.smallThumbnail
+              });
+              setQuery('');
+              setRes([]);
+            }}>
               <h3>Title: {item.volumeInfo.title}</h3>
               <p>{item.volumeInfo.author}</p>
               <img src={item.volumeInfo.imageLinks?.smallThumbnail} alt={item.volumeInfo.title} />
