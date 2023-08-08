@@ -10,32 +10,23 @@ export async function POST(request) {
     const result = await client.query('SELECT * FROM users WHERE username = $1', [username]);
     if (result.rows.length > 0) {
       client.release();
-      return {
-        status: 409,
-        body: {
-          error: 'Username already exists'
-        }
-      }
+      return new Response('User already present', {
+        status: 400
+      })
     }
 
     const hashedPassword = await hash(password, 10);
     await client.query('INSERT INTO users (username, password) VALUES ($1, $2)', [username, hashedPassword]);
     client.release();
 
-    return new Response({
+    return new Response('User registered', {
       status: 200,
-      body: {
-        message: 'User registered'
-      }
     });
   } catch (error) {
     client.release();
     console.log('Error during registration', error);
-    return new Response({
+    return new Response('Internal server error', {
       status: 500,
-      body: {
-        error: 'Internal server error'
-      }
     })
   }
 }
