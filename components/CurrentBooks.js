@@ -8,9 +8,13 @@ export default function CurrentBooks (props) {
       { props.bookList.map((book, index) => {
         return (
           <div key={index}>
-            <h3>{book.title}</h3>
-            <p>{book.author}</p>
-            <img src={book.image} alt={book.title} />
+            <h3>{book.bookProps.title}</h3>
+            { book.bookProps.authors?.map((author, index) => {
+              return (
+                <p key={index}>Author: {author}</p>
+              )
+            })}
+            <img src={book.bookProps.imageLinks?.smallThumbnail} alt={book.bookProps.title} />
           </div>
         )
       })}

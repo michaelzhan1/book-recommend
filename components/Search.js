@@ -44,6 +44,15 @@ export default function Search (props) {
     debounce(handleSearchbar, 1000)(e.target.value);
   }
 
+  const handleBookClick = (bookProps, bookId) => {
+    props.handleAdd({
+      bookProps: bookProps,
+      bookId: bookId
+    });
+    setQuery('');
+    setRes([]);
+  }
+
   return (
     <>
       <input type="text" placeholder="Search" value={query} onChange={ (e) => handleTyping(e) }/>
@@ -53,17 +62,9 @@ export default function Search (props) {
         ) : (
           res.map((item, index) => {
           return (
-            <div key={index} onClick={ () => {
-              props.handleAdd({
-                title: item.volumeInfo.title,
-                author: item.volumeInfo.authors,
-                image: item.volumeInfo.imageLinks?.smallThumbnail
-              });
-              setQuery('');
-              setRes([]);
-            }}>
+            <div key={index} onClick={ () => handleBookClick(item.volumeInfo, item.id) } >
               <h3>Title: {item.volumeInfo.title}</h3>
-              { item.volumeInfo.authors.map((author, index) => {
+              { item.volumeInfo.authors?.map((author, index) => {
                 return (
                   <p key={index}>Author: {author}</p>
                 )
