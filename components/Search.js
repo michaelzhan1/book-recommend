@@ -21,7 +21,7 @@ export default function Search (props) {
     }
   }
 
-  const handleSearch = async (input) => {
+  const handleSearchbar = async (input) => {
     if (!input) {
       setRes([]);
       return;
@@ -41,7 +41,7 @@ export default function Search (props) {
 
   const handleTyping = (e) => {
     setQuery(e.target.value);
-    debounce(handleSearch, 1000)(e.target.value);
+    debounce(handleSearchbar, 1000)(e.target.value);
   }
 
   return (
@@ -56,14 +56,18 @@ export default function Search (props) {
             <div key={index} onClick={ () => {
               props.handleAdd({
                 title: item.volumeInfo.title,
-                author: item.volumeInfo.author,
+                author: item.volumeInfo.authors,
                 image: item.volumeInfo.imageLinks?.smallThumbnail
               });
               setQuery('');
               setRes([]);
             }}>
               <h3>Title: {item.volumeInfo.title}</h3>
-              <p>{item.volumeInfo.author}</p>
+              { item.volumeInfo.authors.map((author, index) => {
+                return (
+                  <p key={index}>Author: {author}</p>
+                )
+              })}
               <img src={item.volumeInfo.imageLinks?.smallThumbnail} alt={item.volumeInfo.title} />
             </div>
           )
