@@ -2,14 +2,24 @@
 
 
 import { useState } from 'react';
-import _debounce from 'lodash.debounce';
-
 
 
 export default function Search (props) {
   const [res, setRes] = useState([]);
   const [query, setQuery] = useState('');
   const [loading, setLoading] = useState(false);
+  const [currentTimerId, setCurrentTimerId] = useState(null);
+
+  const debounce = (callback, delay) => {
+    return (...args) => {
+      if (currentTimerId) {
+        clearTimeout(currentTimerId);
+      }
+      setCurrentTimerId(setTimeout(() => {
+        callback(...args);
+      }, delay));
+    }
+  }
 
   const handleSearch = async (input) => {
     if (!input) {
@@ -29,11 +39,9 @@ export default function Search (props) {
     }
   }
 
-  const debouncedSearch = _debounce(handleSearch, 1500);
-
   const handleTyping = (e) => {
     setQuery(e.target.value);
-    debouncedSearch(e.target.value);
+    debounce(handleSearch, 1000)(e.target.value);
   }
 
   return (
