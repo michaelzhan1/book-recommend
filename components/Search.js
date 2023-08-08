@@ -28,7 +28,7 @@ export default function Search (props) {
     }
     setLoading(true);
     try {
-      const url = `https://www.googleapis.com/books/v1/volumes?q=${input}&projection=lite&key=${process.env.NEXT_PUBLIC_API_KEY}`;
+      const url = `https://www.googleapis.com/books/v1/volumes?q=${input}&key=${process.env.NEXT_PUBLIC_API_KEY}`;
       const res = await fetch(url);
       const data = await res.json();
       setRes(data.items.slice(0, 5));
