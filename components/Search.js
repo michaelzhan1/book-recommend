@@ -53,9 +53,36 @@ export default function Search (props) {
     setRes([]);
   }
 
+  const handleSearch = async (e) => {
+    e.preventDefault();
+    if (!e.target.searchBarQuery.value) {
+      return;
+    }
+    setLoading(true);
+    const url = `https://www.googleapis.com/books/v1/volumes?q=${e.target.searchBarQuery.value}&key=${process.env.NEXT_PUBLIC_API_KEY}`;
+    const res = await fetch(url);
+    const data = await res.json();
+    if (!res.ok) {
+      console.error('Error fetching data:', data);
+      setLoading(false);
+      return;
+    }
+    setLoading(false);
+    const topItem = data.items[0];
+    props.handleAdd({
+      bookProps: topItem.volumeInfo,
+      bookId: topItem.id
+    });
+    setQuery('');
+    setRes([]);
+  }
+
   return (
     <>
-      <input type="text" placeholder="Search" value={query} onChange={ (e) => handleTyping(e) }/>
+      <form onSubmit={ handleSearch }>
+        <input type="text" placeholder="Search" name="searchBarQuery" value={query} onChange={ (e) => handleTyping(e) }/>
+        <button type="submit">Search</button>
+      </form>
       <div>
         { loading ? (
           <p>Loading...</p> 
