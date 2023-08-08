@@ -55,10 +55,30 @@ export default function Books (props) {
     }
   }
 
+  const handleRemove = async (book) => {
+    console.log(props.username, book.bookId)
+    const res = await fetch('/api/removeBook', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        username: props.username,
+        volumeId: book.bookId
+      }),
+    });
+    if (!res.ok) {
+      console.error('Error removing book');
+    } else {
+      console.log('Book removed')
+      setBookList(bookList.filter(b => b.bookId !== book.bookId));
+    }
+  }
+
   return (
     <>
-      <Search handleAdd={handleAdd}/>
-      <CurrentBooks bookList={bookList}/>
+      <Search handleAdd={handleAdd} />
+      <CurrentBooks bookList={bookList} handleRemove={handleRemove} />
     </>
   )
 }

@@ -16,6 +16,7 @@ export default function CurrentBooks (props) {
             })}
             <p>{book.bookProps.description}</p>
             <img src={book.bookProps.imageLinks?.smallThumbnail} alt={book.bookProps.title} />
+            <button onClick={() => props.handleRemove(book)}>Remove book</button>
           </div>
         )
       })}
