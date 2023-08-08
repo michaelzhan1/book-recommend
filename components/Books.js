@@ -3,14 +3,35 @@
 
 import Search from '@/components/Search'
 import CurrentBooks from '@/components/CurrentBooks'
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+
+
+async function fetchData (username) {
+  const res = await fetch('/api/getBooks', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({
+      username: username
+    })
+  });
+  const data = await res.json();
+  return data;
+}
 
 
 export default function Books (props) {
   const [bookList, setBookList] = useState([]);
+  useEffect(() => {
+    async function fetchBooks () {
+      const data = await fetchData(props.username);
+      setBookList(data);
+    }
+    fetchBooks();
+  }, []);
 
   const handleAdd = async (book) => {
-    const authorString = book.bookProps.authors?.join(',');
     const res = await fetch('/api/addBook', {
       method: 'POST',
       headers: {
@@ -20,9 +41,9 @@ export default function Books (props) {
         username: props.username,
         volumeId: book.bookId,
         title: book.bookProps.title,
-        authors: authorString,
+        authors: book.bookProps.authors?.join(','),
         description: book.bookProps.description,
-        categories: book.bookProps.categories,
+        categories: book.bookProps.categories?.join(','),
         thumbnailUrl: book.bookProps.imageLinks?.smallThumbnail
       })
     });

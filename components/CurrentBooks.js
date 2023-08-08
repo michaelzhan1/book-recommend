@@ -14,6 +14,7 @@ export default function CurrentBooks (props) {
                 <p key={index}>Author: {author}</p>
               )
             })}
+            <p>{book.bookProps.description}</p>
             <img src={book.bookProps.imageLinks?.smallThumbnail} alt={book.bookProps.title} />
           </div>
         )

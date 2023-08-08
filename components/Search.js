@@ -49,6 +49,9 @@ export default function Search (props) {
       bookProps: bookProps,
       bookId: bookId
     });
+    if (currentTimerId) {
+      clearTimeout(currentTimerId);
+    }
     setQuery('');
     setRes([]);
   }
@@ -57,6 +60,9 @@ export default function Search (props) {
     e.preventDefault();
     if (!e.target.searchBarQuery.value) {
       return;
+    }
+    if (currentTimerId) {
+      clearTimeout(currentTimerId);
     }
     setLoading(true);
     const url = `https://www.googleapis.com/books/v1/volumes?q=${e.target.searchBarQuery.value}&key=${process.env.NEXT_PUBLIC_API_KEY}`;
