@@ -85,9 +85,9 @@ export default function Search (props) {
 
   return (
     <>
-      <form onSubmit={ handleSearch }>
-        <input type="text" placeholder="Search" name="searchBarQuery" value={query} onChange={ (e) => handleTyping(e) }/>
-        <button type="submit">Search</button>
+      <form onSubmit={ handleSearch } className='w-full lg:w-1/2 flex px-8'>
+        <input type="text" placeholder="Add a book!" name="searchBarQuery" value={query} onChange={ (e) => handleTyping(e) } className='shadow appearance-none border rounded-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline flex-grow mr-4 ps-2'/>
+        <button type="submit">Add</button>
       </form>
       <div>
         { loading ? (

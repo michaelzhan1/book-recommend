@@ -77,7 +77,10 @@ export default function Books (props) {
 
   return (
     <>
-      <Search handleAdd={handleAdd} />
+      <div className='flex flex-col items-center mb-4 text-center w-full'>
+        <h1 className='text-5xl font-bold text-gray-700 mb-2 leading-snug'>Your bookshelf</h1>
+        <Search handleAdd={handleAdd} />
+      </div>
       <CurrentBooks bookList={bookList} handleRemove={handleRemove} />
     </>
   )
