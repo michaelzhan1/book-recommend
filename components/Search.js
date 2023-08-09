@@ -1,7 +1,7 @@
 'use client'
 
 
-import { useState } from 'react';
+import { useState, useRef, useEffect } from 'react';
 
 
 export default function Search (props) {
@@ -9,6 +9,20 @@ export default function Search (props) {
   const [query, setQuery] = useState('');
   const [loading, setLoading] = useState(false);
   const [currentTimerId, setCurrentTimerId] = useState(null);
+  const [dropdownOpen, setDropdownOpen] = useState(false);
+  const dropdownRef = useRef(null);
+
+  useEffect(() => {
+    function handleClickOutside (e) {
+      if (dropdownRef.current && !dropdownRef.current.contains(e.target)) {
+        setDropdownOpen(false);
+      }
+    }
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    }
+  }, [dropdownRef]);
 
   const debounce = (callback, delay) => {
     return (...args) => {
@@ -40,6 +54,7 @@ export default function Search (props) {
   }
 
   const handleTyping = (e) => {
+    setDropdownOpen(true);
     setQuery(e.target.value);
     debounce(handleSearchbar, 1000)(e.target.value);
   }
@@ -85,43 +100,40 @@ export default function Search (props) {
 
   return (
     <>
-      <div className='w-full lg:w-1/2 relative'>
+      <div className='w-full lg:w-1/2 relative' ref={dropdownRef}>
         <form onSubmit={ handleSearch } className='w-full flex bg-white shadow-md appearance-none '>
           <input type="text" placeholder="Add a book!" name="searchBarQuery" value={query} onChange={ (e) => handleTyping(e) } className='border py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline flex-grow ps-4'/>
           <button type="submit" className='bg-gray-500 px-4 text-white'>Add</button>
         </form>
 
-        <div className='w-full absolute'>
-        { loading ? (
-          <p>Loading...</p> 
-        ) : (
-          <div className='flex flex-col text-start bg-gray-100 pt-3'>
-            {res.map((item, index) => {
-            return (
-              <>
-                { index !== 0 && <hr className='my-2 bg-gray-400 h-px border-0'/> }
-                <div key={index} onClick={ () => handleBookClick(item.volumeInfo, item.id) } className='flex'>
-                  <div>
-                    <img src={item.volumeInfo.imageLinks?.smallThumbnail} alt={item.volumeInfo.title} className='w-16 aspect-ratio:auto'/>
+        {dropdownOpen && (
+          <div className='w-full absolute'>
+          { !loading && res.length > 0 && (
+            <div className='flex flex-col text-start bg-gray-100 py-3'>
+              {res.map((item, index) => {
+              return (
+                <>
+                  { index !== 0 && <hr className='my-2 bg-gray-400 h-px border-0'/> }
+                  <div key={index} onClick={ () => handleBookClick(item.volumeInfo, item.id) } className='flex mx-3'>
+                    <div>
+                      <img src={item.volumeInfo.imageLinks?.smallThumbnail} alt={item.volumeInfo.title} className='h-24 w-auto'/>
+                    </div>
+                    <div className="flex flex-col ms-3">
+                      <h3 className='font-bold text-lg'>{item.volumeInfo.title}</h3>
+                      { item.volumeInfo.authors?.map((author, index) => {
+                        return (
+                          <p key={index}>Author: {author}</p>
+                        )
+                      })}
+                    </div>
                   </div>
-
-
-
-                  <div className="flex flex-col">
-                    <h3>Title: {item.volumeInfo.title}</h3>
-                    { item.volumeInfo.authors?.map((author, index) => {
-                      return (
-                        <p key={index}>Author: {author}</p>
-                      )
-                    })}
-                  </div>
-                </div>
-              </>
-            )
-            })}
+                </>
+              )
+              })}
+            </div>
+            )}
           </div>
         )}
-      </div>
       </div>
       
     </>
