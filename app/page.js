@@ -14,9 +14,9 @@ export default async function Home() {
 
   return (
     <>
-      <div className="h-screen bg-gray-200">
+      <div className="h-screen bg-gray-200 flex flex-col">
         <Header username={session.user.username} />
-        <Books username={session.user.username} />
+        <Books username={session.user.username} className='flex flex-col flex-grow'/>
       </div>
     </>
   )
