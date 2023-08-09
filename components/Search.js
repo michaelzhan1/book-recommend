@@ -100,8 +100,8 @@ export default function Search (props) {
 
   return (
     <>
-      <div className='w-full lg:w-1/2 relative' ref={dropdownRef}>
-        <form onSubmit={ handleSearch } className='w-full flex bg-white shadow-md appearance-none '>
+      <div className='w-11/12 lg:w-1/2 relative' ref={dropdownRef}>
+        <form onSubmit={ handleSearch } className='flex bg-white shadow-md appearance-none'>
           <input type="text" placeholder="Add a book!" name="searchBarQuery" value={query} onChange={ (e) => handleTyping(e) } className='border py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline flex-grow ps-4'/>
           <button type="submit" className='bg-gray-500 px-4 text-white'>Add</button>
         </form>
