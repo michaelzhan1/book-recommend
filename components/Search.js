@@ -85,28 +85,45 @@ export default function Search (props) {
 
   return (
     <>
-      <form onSubmit={ handleSearch } className='w-full lg:w-1/2 flex px-8'>
-        <input type="text" placeholder="Add a book!" name="searchBarQuery" value={query} onChange={ (e) => handleTyping(e) } className='shadow appearance-none border rounded-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline flex-grow mr-4 ps-2'/>
-        <button type="submit">Add</button>
-      </form>
-      <div>
+      <div className='w-full lg:w-1/2 relative'>
+        <form onSubmit={ handleSearch } className='w-full flex bg-white shadow-md appearance-none '>
+          <input type="text" placeholder="Add a book!" name="searchBarQuery" value={query} onChange={ (e) => handleTyping(e) } className='border py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline flex-grow ps-4'/>
+          <button type="submit" className='bg-gray-500 px-4 text-white'>Add</button>
+        </form>
+
+        <div className='w-full absolute'>
         { loading ? (
           <p>Loading...</p> 
         ) : (
-          res.map((item, index) => {
-          return (
-            <div key={index} onClick={ () => handleBookClick(item.volumeInfo, item.id) } >
-              <h3>Title: {item.volumeInfo.title}</h3>
-              { item.volumeInfo.authors?.map((author, index) => {
-                return (
-                  <p key={index}>Author: {author}</p>
-                )
-              })}
-              <img src={item.volumeInfo.imageLinks?.smallThumbnail} alt={item.volumeInfo.title} />
-            </div>
-          )
-        }))}
+          <div className='flex flex-col text-start bg-gray-100 pt-3'>
+            {res.map((item, index) => {
+            return (
+              <>
+                { index !== 0 && <hr className='my-2 bg-gray-400 h-px border-0'/> }
+                <div key={index} onClick={ () => handleBookClick(item.volumeInfo, item.id) } className='flex'>
+                  <div>
+                    <img src={item.volumeInfo.imageLinks?.smallThumbnail} alt={item.volumeInfo.title} className='w-16 aspect-ratio:auto'/>
+                  </div>
+
+
+
+                  <div className="flex flex-col">
+                    <h3>Title: {item.volumeInfo.title}</h3>
+                    { item.volumeInfo.authors?.map((author, index) => {
+                      return (
+                        <p key={index}>Author: {author}</p>
+                      )
+                    })}
+                  </div>
+                </div>
+              </>
+            )
+            })}
+          </div>
+        )}
       </div>
+      </div>
+      
     </>
   )
 }
