@@ -14,6 +14,7 @@ export async function POST(request) {
       const hashedPassword = await hash(newPassword, 10);
       await client.query('INSERT INTO users (username, password) VALUES ($1, $2)', [email, hashedPassword]);
     }
+    client.release();
     return new Response('User registered', {
       status: 200,
     });
