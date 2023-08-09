@@ -29,7 +29,7 @@ export default function LoginForm(props) {
         <input type="password" name="password" placeholder="Password" required className='shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline' />
       </div>
       <div className='mb-3 text-center'>
-        <button type="submit" className='w-full bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 rounded focus:outline-none focus:shadow-outline mb-3'>Login</button>
+        <button type="submit" className='w-full bg-green-500 hover:bg-blue-700 text-white font-bold py-2 rounded focus:outline-none focus:shadow-outline mb-3'>Login</button>
         <a href="/register" className='text-sm text-blue-500 hover:text-blue-700 underline'>Click here to register</a>
       </div>
     </form>
