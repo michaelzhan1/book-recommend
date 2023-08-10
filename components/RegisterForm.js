@@ -4,7 +4,6 @@
 import { signIn } from 'next-auth/react'
 
 
-// same here as with login form, create a register route to handle the error of the user already existing
 async function register(e) {
   e.preventDefault()
   if (e.target.password.value !== e.target.confirmPassword.value) {
@@ -28,7 +27,7 @@ async function register(e) {
       callbackUrl: `${window.location.origin}/`
     });
   } else {
-    const { error } = await res.json()
+    const error = await res.text()
     alert(error)
   }
 }

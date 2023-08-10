@@ -9,11 +9,22 @@ async function login(e) {
   e.preventDefault()
   const username = e.target.username.value
   const password = e.target.password.value
-  await signIn('credentials', {
-    username,
-    password,
-    callbackUrl: `${window.location.origin}/`
-  })
+  try {
+    await signIn('credentials', {
+      username,
+      password,
+      redirect: false
+    }).then(res => {
+      if (res.error) {
+        alert('Username or password is incorrect')
+      } else {
+        window.location.replace('/')
+      }
+    });
+  } catch (error) {
+    console.log(error)
+    alert('Error logging in')
+  }
 }
 
 
