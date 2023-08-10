@@ -16,8 +16,13 @@ async function fetchData (username) {
       username: username
     })
   });
-  const data = await res.json();
-  return data;
+  if (!res.ok) {
+    console.error('Error fetching books');
+    alert('Error fetching books')
+  } else {
+    const data = await res.json();
+    return data;
+  }
 }
 
 
@@ -50,8 +55,12 @@ export default function Books (props) {
     if (res.ok) {
       console.log('Book added')
       setBookList([...bookList, book]);
+    } else if (res.status === 400) {
+      console.error('Book already present');
+      alert('Book already present')
     } else {
       console.error('Error adding book');
+      alert('Error adding book')
     }
   }
 
@@ -69,6 +78,7 @@ export default function Books (props) {
     });
     if (!res.ok) {
       console.error('Error removing book');
+      alert('Error removing book')
     } else {
       console.log('Book removed')
       setBookList(bookList.filter(b => b.bookId !== book.bookId));

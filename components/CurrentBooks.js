@@ -20,9 +20,9 @@ export default function CurrentBooks (props) {
 
                   <div className="flex justify-between">
                     <div className="flex flex-col w-1/4">
-                      { book.bookProps.authors?.map((author, index) => {
+                      { book.bookProps.authors?.map((author, index2) => {
                         return (
-                          <p key={index}>{author}</p>
+                          <p key={index2}>{author}</p>
                         )
                       })}
                       <img src={book.bookProps.imageLinks?.smallThumbnail} alt={book.bookProps.title} className="w-36 h-auto"/>
