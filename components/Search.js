@@ -116,7 +116,11 @@ export default function Search (props) {
                   { index !== 0 && <hr className='my-2 bg-gray-400 h-px border-0'/> }
                   <div key={index} onClick={ () => handleBookClick(item.volumeInfo, item.id) } className='flex mx-3'>
                     <div>
-                      <img src={item.volumeInfo.imageLinks?.smallThumbnail} alt={item.volumeInfo.title} className='h-24 w-auto'/>
+                      { item.volumeInfo.imageLinks?.smallThumbnail ? (
+                        <img src={item.volumeInfo.imageLinks?.smallThumbnail} alt={item.volumeInfo.title} className='h-24 w-auto'/>
+                      ) : (
+                        <img src='missing.jpg' alt={item.volumeInfo.title} className='h-24 w-auto'/>
+                      )}
                     </div>
                     <div className="flex flex-col ms-3">
                       <h3 className='font-bold text-lg'>{item.volumeInfo.title}</h3>
