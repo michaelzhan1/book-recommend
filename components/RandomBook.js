@@ -51,7 +51,11 @@ export default function RandomBook (props) {
 
   return (
     <>
-      { props.bookList.length > 0 && <button onClick={ handleRandom }>Random Book</button> }
+      { props.bookList.length > 0 && (
+        <div className='text-center'>
+          <button onClick={ handleRandom } className='bg-gray-500 px-3 py-2 text-white mb-4'>Bored? Find a random book!</button>
+        </div>
+      )}
       { popupOpen && popupBook && (
         <div className="absolute bg-black bg-opacity-50 w-full h-screen">
           <div className='absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-gray-100 w-11/12 lg:w-1/2 px-4 py-3' ref={popupRef}>
