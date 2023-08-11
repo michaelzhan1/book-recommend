@@ -3,6 +3,7 @@
 
 import Search from '@/components/Search'
 import CurrentBooks from '@/components/CurrentBooks'
+import RandomBook from '@/components/RandomBook'
 import { useState, useEffect } from 'react';
 
 
@@ -65,7 +66,6 @@ export default function Books (props) {
   }
 
   const handleRemove = async (book) => {
-    console.log(props.username, book.bookId)
     const res = await fetch('/api/removeBook', {
       method: 'POST',
       headers: {
@@ -91,6 +91,7 @@ export default function Books (props) {
         <h1 className='text-5xl font-bold text-gray-700 mb-2 leading-snug'>Your bookshelf</h1>
         <Search handleAdd={handleAdd} />
       </div>
+      <RandomBook handleAdd={handleAdd} bookList={bookList} />
       <CurrentBooks bookList={bookList} handleRemove={handleRemove} />
     </>
   )

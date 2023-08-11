@@ -42,7 +42,7 @@ export default function Search (props) {
     }
     setLoading(true);
     try {
-      const url = `https://www.googleapis.com/books/v1/volumes?q=${input}&key=${process.env.NEXT_PUBLIC_API_KEY}`;
+      const url = `https://www.googleapis.com/books/v1/volumes?q=${input.replaceAll(' ', '+')}&key=${process.env.NEXT_PUBLIC_API_KEY}`;
       const res = await fetch(url);
       const data = await res.json();
       setRes(data.items.slice(0, 5));
@@ -80,7 +80,7 @@ export default function Search (props) {
       clearTimeout(currentTimerId);
     }
     setLoading(true);
-    const url = `https://www.googleapis.com/books/v1/volumes?q=${e.target.searchBarQuery.value}&key=${process.env.NEXT_PUBLIC_API_KEY}`;
+    const url = `https://www.googleapis.com/books/v1/volumes?q=${e.target.searchBarQuery.value.replaceAll(' ', '+')}&key=${process.env.NEXT_PUBLIC_API_KEY}`;
     const res = await fetch(url);
     const data = await res.json();
     if (!res.ok) {
@@ -112,9 +112,9 @@ export default function Search (props) {
             <div className='flex flex-col text-start bg-gray-100 py-3'>
               {res.map((item, index) => {
               return (
-                <>
+                <div key={index}>
                   { index !== 0 && <hr className='my-2 bg-gray-400 h-px border-0'/> }
-                  <div key={index} onClick={ () => handleBookClick(item.volumeInfo, item.id) } className='flex mx-3'>
+                  <div onClick={ () => handleBookClick(item.volumeInfo, item.id) } className='flex mx-3'>
                     <div>
                       { item.volumeInfo.imageLinks?.smallThumbnail ? (
                         <img src={item.volumeInfo.imageLinks?.smallThumbnail} alt={item.volumeInfo.title} className='h-24 w-auto'/>
@@ -131,7 +131,7 @@ export default function Search (props) {
                       })}
                     </div>
                   </div>
-                </>
+                </div>
               )
               })}
             </div>
